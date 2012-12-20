@@ -125,6 +125,6 @@ JB :
 
 asset_pipeline:
   bundle: true            # Default = true
-  compress: true          # Default = true
+  compress: false             # Default = true
   output_path: assets     # Default = assets
   gzip: false             # Default = false  

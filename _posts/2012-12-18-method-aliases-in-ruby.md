@@ -28,7 +28,7 @@ So why do we need both? Here is another example. `length` and `size` are also sy
 This is perplexing to me. As much as I love Ruby, I often think that my mind philosophically prefers Python's approach. The following is a direct quote from ['The Zen of Python'](http://www.python.org/dev/peps/pep-0020/):
 
 >There should be one—and preferably only one—obvious
-> way to do [anything].
+> way to do anything.
 
 I don't necessarily have an answer (other than the likelihood that one or the other will be more familiar to programmers coming from other languages), but here's a thought. We're not working in Python, so let's embrace the fact that Ruby has two ways of doing things sometimes.
 

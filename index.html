@@ -1,26 +1,25 @@
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-   <title>Hello World!</title>
+   <title>Home</title>
    <meta name="author" content="Nick Cox" />
    <link href="http://feeds.feedburner.com/" rel="alternate" title="your title" type="application/atom+xml" />
 
    <!-- syntax highlighting CSS -->
-   <link rel="stylesheet" href="/assets/themes/tom/css/syntax.css" type="text/css" />
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
 
    <!-- Homepage CSS -->
-   <link rel="stylesheet" href="/assets/themes/tom/css/screen.css" type="text/css" media="screen, projection" />
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
 
 
-   <link href='/assets/global-428327a24a98a7ee0ec6231e60ceec6a.css' rel='stylesheet' type='text/css' media='screen' />
+   <link href='/assets/global-dcf85abb0ad65dd54f8941e42721833d.css' rel='stylesheet' type='text/css' media='screen' />
 
 
    <!-- jquery -->
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   
-   <script src='/assets/global-fa6c966f0eb8785372112d39306d0258.js' type='text/javascript'></script>
+   <script src='/assets/global-ba5729d2be275ea39029bff5dfc5fa1c.js' type='text/javascript'></script>
 
 
    <!-- Typekit -->
@@ -38,79 +37,243 @@
   <div class="site">
     <nav>
       <ul>
-        <li><a href="/">Devblog</a></li>
+        <li><a href="/">Home</a></li>
         <li><a class="extra" href="/archive.html">Archive</a></li>
-        <li><a class="extra" href="">Pages</a></li>
-        <li><a class="extra" href="/categories.html">Categories</a></li>
-        <li><a class="extra" href="/tags.html">Tags</a></li>
+        <li><a class="extra" href="/pages/about">About</a></li>
       </ul>
     </nav>
+
+    <article>
   
+      <article>
+
+  
+      <h1>Method Aliases In Ruby</h1>
+      <p class='meta'>18 Dec 2012</p>
+       <p>I often find myself wondering why so many of the Ruby native string and array methods have aliases. For example, with string methods, we have <code>next</code> and <code>succ</code>, which are equivalent; they both return the next alphanumeric character. Like so:</p>
+
+<pre><code>1.9.3p194 :024 &gt; string = &quot;a&quot;
+ =&gt; &quot;a&quot; 
+1.9.3p194 :025 &gt; string.next
+ =&gt; &quot;b&quot; 
+1.9.3p194 :026 &gt; string
+ =&gt; &quot;a&quot; 
+1.9.3p194 :027 &gt; string.succ
+ =&gt; &quot;b&quot;   </code></pre>
+
+<p>So why do we need both? Here is another example. <code>length</code> and <code>size</code> are also synonymous. Both return the character length of a string.</p>
+
+<pre><code>1.9.3p194 :028 &gt; a = &quot;supercalifragilisticexpealidocious&quot;
+ =&gt; &quot;supercalifragilisticexpealidocious&quot; 
+1.9.3p194 :029 &gt; a.size
+ =&gt; 34 
+1.9.3p194 :030 &gt; a.length
+ =&gt; 34 </code></pre>
+
+<p>This is perplexing to me. As much as I love Ruby, I often think that my mind philosophically prefers Python&#8217;s approach. The following is a direct quote from <a href='http://www.python.org/dev/peps/pep-0020/'>&#8216;The Zen of Python&#8217;</a>:</p>
+
+<blockquote>
+<p>There should be one—and preferably only one—obvious way to do anything.</p>
+</blockquote>
+
+<p>I don&#8217;t necessarily have an answer (other than the likelihood that one or the other will be more familiar to programmers coming from other languages), but here&#8217;s a thought. We&#8217;re not working in Python, so let&#8217;s embrace the fact that Ruby has two ways of doing things sometimes.</p>
+
+<p>If we think intuitively, it seems to me that we would want to find the &#8216;size&#8217; of an alphanumeric string like, for instance, a base 64 token. That, to me, makes more intuitive sense than to get the &#8216;length&#8217; of it. <code>length</code>, to me, seems to be the method we would want to use to find the length of a word, where the word &#8216;size&#8217; (and method of the same name) don&#8217;t make as much lexical sense.</p>
+
+<p>For example:</p>
+
+<pre><code>1.9.3p194 :018 &gt; token = SecureRandom.urlsafe_base64
+ =&gt; &quot;OFiTxLeCuosWXiLe9nVLeQ&quot; 
+1.9.3p194 :019 &gt; token.size
+ =&gt; 22 </code></pre>
+
+<p>Compare that to this:</p>
+
+<pre><code>1.9.3p194 :022 &gt; sentence = &quot;An incredibly long sentence about whosits and whatsits&quot;
+ =&gt; &quot;An incredibly long sentence about whosits and whatsits&quot; 
+1.9.3p194 :023 &gt; sentence.length
+ =&gt; 54  </code></pre>
+
+<p>Doesn&#8217;t that just make more sense? To me, it seems more expressive.</p>
+
+<p>Just to reiterate, whereas a developer coming from Python might be tempted to use one or the other method uniformly throughout a project, I like to think that Ruby&#8217;s features lend themselves well to expressiveness, and I would prefer using one method or the other in the context it makes sense. After all, we work in a language with this syntax:</p>
+
+<pre><code>3.times do &#39;Hello World!&#39;</code></pre>
+
+<p>This is as close to spoken English as I&#8217;ve ever seen programming syntax. So let&#8217;s write Ruby like we would speak, and use methods where they make sense contextually, even if they do the same thing. As a result, our code will be eaiser to read, and therefore maintain. That&#8217;s why we have the canonical saying:</p>
+
+<blockquote>
+<p>&#8216;Programs must be written for people to read, and only incidentally for machines to execute.&#8217; - H. Abelson and G. Sussman <em>&#8220;The Structure and Interpretation of Computer Programs)</em></p>
+</blockquote>
+
+<p>That sounds good, but let&#8217;s make this a little bit more complex. Look what happens when we make our string an array. <code>size</code> and <code>length</code> still apply, but to count the number of items in an array we also have, you guessed it, <code>count</code>. Check this out:</p>
+
+<pre><code>1.9.3p194 :017 &gt; sentence = &quot;An incredibly long sentence about whosits and whatsits&quot;
+ =&gt; &quot;An incredibly long sentence about whosits and whatsits&quot; 
+1.9.3p194 :018 &gt; a = sentence.split(&#39; &#39;)
+ =&gt; [&quot;An&quot;, &quot;incredibly&quot;, &quot;long&quot;, &quot;sentence&quot;, &quot;about&quot;, &quot;whosits&quot;, &quot;and&quot;, &quot;whatsits&quot;] 
+1.9.3p194 :019 &gt; a.size
+ =&gt; 8 
+1.9.3p194 :020 &gt; a.length
+ =&gt; 8 
+1.9.3p194 :021 &gt; a.count
+ =&gt; 8 </code></pre>
+
+<p>So when should we use which? According to the <a href='http://www.ruby-doc.org/core-1.9.3/Array.html#method-i-length'>Ruby docs</a>, <code>size</code> and <code>length</code> are truly the same, but <code>count</code> can take a block, and will return the number array items that give a true value. So let&#8217;s look at our previous example with this in mind:</p>
+
+<pre><code>1.9.3p194 :027 &gt; a
+ =&gt; [&quot;An&quot;, &quot;incredibly&quot;, &quot;long&quot;, &quot;sentence&quot;, &quot;about&quot;, &quot;whosits&quot;, &quot;and&quot;, &quot;whatsits&quot;] 
+1.9.3p194 :028 &gt; a.count
+ =&gt; 8 
+1.9.3p194 :029 &gt; a.count(&#39;long&#39;)
+ =&gt; 1 
+1.9.3p194 :030 &gt; a.count(&#39;hello&#39;)
+ =&gt; 0 </code></pre>
+
+<p>So while <code>count</code> can return the number of array elements, it also has this added feature of <code>count</code>ing the number of passed in items the array elements match.</p>
+
+<p>Thus, the only rule I can think of when working with arrays is to choose <code>size</code> or <code>length</code> and work with it throughout a project to return the number of array items, but only use <code>count</code> when you need to pass in a block so that there is no confusion about why you used differerent methods in different places to do the same job. This will lend to more cohesion and more expressiveness.</p>
+
+<h2 id='gotchas'>Gotchas</h2>
+
+<p>There are, of course, some gotchas to this idea. When I first started writing Ruby, I was so in love with the English-like syntax that, for a time, I decided I wanted to use words instead of symbols for conditional operators. Thus, I might&#8217;ve at one point been prone to write:</p>
+
+<pre><code>def greeting
+  if user.logged_in? and not(user.nil?)
+    &quot;Welcome back, #{user.name}&quot;
+  end
+end</code></pre>
+
+<p>That was a contrived example, for sure, and an exaggeration, but I wanted to get to this point: While researching the logical operators, I found a <a href='http://blog.internautdesign.com/2007/5/30/ruby-operator-precedence-gotcha-logical-and'>case</a> where <code>and</code> and <code>&amp;&amp;</code> returned different values:</p>
+
+<pre><code>1.9.3p194 :013 &gt; result = true and false; result
+ =&gt; true 
+1.9.3p194 :014 &gt; result = true &amp;&amp; false; result
+ =&gt; false</code></pre>
+
+<p>That scared me enough to make me want to use symbolic logical operators all the time and sometimes parenthesis just to communicate intent. I now do this even when not strictly necessary:</p>
+
+<pre><code>def viewable_by?(current_user)
+  current_user.system_admin? || ( current_user.logged_in? &amp;&amp; current_user.owner? )
+end</code></pre>
+
+<p>In this case, the parenthesis weren&#8217;t absolutely necessary, as can be seen when we boil this example down:</p>
+
+<pre><code>1.9.3p194 :024 &gt; false || true &amp;&amp; true
+ =&gt; true</code></pre>
+
+<p>But I use parenthesis anyway. I don&#8217;t sacrifice the aesthetics of the code (in my opinion, anyway), and that way, my code intentions become immediately more clear. And isn&#8217;t that the goal?</p>
+  
+      <h1>Refactoring Cucumber</h1>
+      <p class='meta'>17 Dec 2012</p>
+       <p>At work, we&#8217;ve been moving away from Cucumber tests for the past number of months, in favor of the more robust Capybara and rspec paring. Given that I&#8217;m a relative novice in Rails test-driven development, the supposed brittleness of Cucumber tests wasn&#8217;t immediately clear to me, so I did some digging, and came up with a <a href='http://aslakhellesoy.com/post/11055981222/the-training-wheels-came-off'>few</a> <a href='http://benmabey.com/2008/05/19/imperative-vs-declarative-scenarios-in-user-stories.html'>posts</a> that talk about the pitfalls of the &#8220;imperative&#8221; style of step writing for user stories. A solid example of this is Ben Mabey&#8217;s ancient, but still applicable post, <a href='http://benmabey.com/2008/05/19/imperative-vs-declarative-scenarios-in-user-stories.html'>&#8220;Imperative vs. Declarative Scenarios in User Stories&#8221;</a>. Mabey&#8217;s assertion is that it is too easy to rely too heavily on the built-in Cucumber web steps. For example:</p>
+
+<pre><code>When I fill in Name with &#39;Alligator&#39;
+And select Phylum as &#39;Chordata&#39;
+And fill in Animal Class with &#39;Sauropsida&#39;
+And fill in Order with &#39;Crocodilia&#39;
+And fill in Family with &#39;Alligatoridae&#39;
+And fill in Genus with &#39;Alligator&#39;
+And check Lay Eggs
+And click the Create button</code></pre>
+
+<p>Here, Maybe suggests, the &#8220;story&#8221; part of the user story tends to get lost and mired in the technical details. I was heavily influenced by this post, and decided to do a little Cucumber refactoring at work to try out Mabey&#8217;s declarative style, which he demonstrates thusly:</p>
+
+<pre><code>	Story: Animal Submission
+	As a Zoologist
+	I want to add a new animal to the site
+	So that I can share my animal knowledge with the community
+	
+		Scenario: successful submission
+		Given I&#39;m on the animal creation page
+		When I add a new animal
+		Then I should see the page for my newly created animal
+		And the notice &#39;Thank you for your animal submission!&#39;</code></pre>
+
+<p>As Mabey notes, it has more of the <a href='http://www.jbrains.ca/permalink/user-stories-a-ticket-for-a-conversation'>token for conversation</a> feel to it, and it&#8217;s immediately clear that it is more likely to meet the user&#8217;s need, since, in this case, the user cares more about completing their goals than how those goals are handled on the back end.</p>
+
+<h2 id='my_attempt'>My Attempt</h2>
+
+<p>I took Mabey&#8217;s advice to our own codebase, and I extracted a Cucumber test that I had written a few months back. Now, I won&#8217;t start to bad mouth my code and talk endlessly about how terrible a person I am for having written it this way, but I&#8217;ll give you a taste of how poorly this test spoke to the user&#8217;s need. I present to you this feature test for our site&#8217;s feedback form:</p>
+
+<pre><code>	#features/feedback.feature
+Feature: Feedback
+Scenario: Submitting feedback
+	Given I go to the feedback page
+	And I fill out the feedback form and submit it	
+	Then I should see a success message
+	Then I should see &quot;Email can&#39;t be blank&quot;
+	When I fill in &quot;Your email&quot; with &quot;nick@navigatingcancer.com&quot;
+	And I fill in &quot;Summary&quot; with &quot;This site rules&quot;
+	And I fill in &quot;What you observed&quot; with &quot;This site rules&quot;
+	And I press &quot;Send&quot;
+	Then the flash notice should be &quot;Thank you for your feedback! |
+		We try to respond to questions and requests within one business day.&quot;
+	And ruby FeedbackForm.last.email.should == &#39;nick@navigatingcancer.com&#39;
+	And ruby FeedbackForm.last.content.should match &quot;This site rules&quot;</code></pre>
+
+<p>Yep, you read that right. That&#8217;s a Ruby function inside of a Cucumber test. I wonder what user will be thinking of their form submission in terms of a Ruby method chain? Now here&#8217;s my improved version, written with Turnip and Capybara.</p>
+
+<pre><code>#spec/acceptance/forms/feedback.feature&#39;
+Feature: Feedback form
+
+	As a user of the site
+I want to be able to submit feedback about the site
+So that I can report if something breaks
+
+	@feedback
+Scenario: Submitting feedback (successful)
+	Given I go to the feedback page
+	And I fill out the feedback form and submit it
+	Then I should see a success message
+
+#spec/acceptance/forms/feedback_steps.rb
+require &#39;spec_helper&#39;
+steps_for :feedback do
+	step &#39;I go to the feedback page&#39; do
+  	page.visit &#39;/feedback&#39;
+	end
+
+		step &#39;I fill out the feedback form and submit it&#39; do
+ 		page.click_button &#39;Send&#39;
+ 		page.should have_content &quot;Email can&#39;t be blank&quot;
+ 		page.fill_in &#39;Your email&#39;, with: &#39;joe@navigatingcancer.com&#39;
+ 		page.fill_in &#39;Summary&#39;, with: &#39;Just saying&#39;      		page.fill_in &#39;What you observed&#39;, with: &#39;I am awesome&#39;
+  	page.click_button &#39;Send&#39;
+	end
+
+		step &#39;I should see a success message&#39; do
+  	page.should have_content &quot;Thank you for your feedback! We try to respond to questions and requests within one business day.&quot;
+ 		FeedbackForm.last.email.should == &#39;joe@navigatingcancer.com&#39;
+  	FeedbackForm.last.content.should match &#39;I am awesome&#39;
+	end
+end</code></pre>
+
+<p>See how much more nicely that reads? Now the user story is really coherent. They go to the form and submit it, and they should get a success message. That&#8217;s truly how simple the step should be. Notice that I still handled the validation in Capybara. But the it&#8217;s not the user&#8217;s job to think about what should happen if they don&#8217;t submit the form correctly, it&#8217;s mine. Thus, I should handle that in the test logic that doesn&#8217;t involve the user story.</p>
+
+<h2 id='onward'>Onward</h2>
+
+<p>As a front-end developer coming to the TDD Rails world, Cucumber was helpful to me because it helped me to think about things from the browser&#8217;s perspective. The <a href='https://github.com/cucumber/cucumber/wiki/Gherkin'>gherkin syntax</a>, when used well, really does allow for expressive steps and user stories that invite collaboration with non-developers. But that syntax paired with Capybara&#8217;s more robust step handling make for a much clearer and well-executed test. Notably, the reason I went back to this test was that we had changed the UI for the form. Our previous form submitted an <a href='https://unfuddle.com/'>unfuddle</a> ticket, but we have recently switched our ticketing system to <a href='http://assembla.com'>Assembla</a>. Also, we added a few fields and renamed others. In this case, the Cucumber test (previous to the one I have posted) would have failed because it wouldn&#8217;t have been able to find the form labels it was looking for. <em>But the user story remained the same.</em> All the user wants to do is submit a feedback form. So rather than changing several tests to reflect this, why not only change the ones that are concerned on the back end? They&#8217;re easier to maintain, and as great as Cucumber was, I find that I prefer the Capybara-rspec approach when it comes to looking for content on the page. I&#8217;m looking forward to exploring this technique across our codebase during refactoring, and in the future.</p>
+  
+
+</article><section class='recently'>
+  <h2>Recently</h2>
+  <ul class='posts'>
     
-<div class="post">
-<p>Read <a href='http://jekyllbootstrap.com/usage/jekyll-quick-start.html'>Jekyll Quick Start</a></p>
+      <li><span>17 Dec 2012</span> &raquo; <a href='/articles/2012/12/17/refactoring-cucumber'>Refactoring Cucumber</a></li>
+    
+  </ul>
+</section>
 
-<p>Complete usage and documentation available at: <a href='http://jekyllbootstrap.com'>Jekyll Bootstrap</a></p>
-
-<h2 id='update_author_attributes'>Update Author Attributes</h2>
-
-<p>In <code>_config.yml</code> remember to specify your own data:</p>
-
-<pre><code>title : My Blog =)
-
-author :
-  name : Name Lastname
-  email : blah@email.test
-  github : username
-  twitter : username</code></pre>
-
-<p>The theme should reference these variables whenever needed.</p>
-
-<h2 id='sample_posts'>Sample Posts</h2>
-
-<p>This blog contains sample posts which help stage pages and blog data. When you don&#8217;t need the samples anymore just delete the <code>_posts/core-samples</code> folder.</p>
-
-<pre><code>$ rm -rf _posts/core-samples</code></pre>
-
-<p>Here&#8217;s a sample &#8220;posts list&#8221;.</p>
-<ul class='posts'>
+    </article>
   
-    <li><span>18 Dec 2012</span> &raquo; <a href='/articles/2012/12/18/method-aliases-in-ruby'>Method Aliases In Ruby</a></li>
-  
-    <li><span>17 Dec 2012</span> &raquo; <a href='/articles/2012/12/17/refactoring-cucumber'>Refactoring Cucumber</a></li>
-  
-</ul>
-<h2 id='todo'>To-Do</h2>
-
-<p>This theme is still unfinished. If you&#8217;d like to be added as a contributor, <a href='http://github.com/plusjade/jekyll-bootstrap'>please fork</a>! We need to clean up the themes, make theme usage guides with theme-specific markup examples.</p>
-</div>
-
-
-  
-    <div class="footer">
-      <div class="contact">
-        <p>
-          Nick Cox<br />
-          Site Tagline<br />
-          <a href='mailto:nick@nickcox.me'>nick@nickcox.me</a>
+    <footer> 
+      <p>&copy;<a href='mailto:nick@nickcox.me'>Nick Cox</a> | <a href="http://github.com/thenickcox/">github.com/thenickcox</a> | <a href="http://twitter.com/@everydaytype/">twitter.com/@everydaytype</a><br />
         </p>
-      </div>
-      <div class="contact">
-        <p>
-          <a href="http://github.com/thenickcox/">github.com/thenickcox</a><br />
-          <a href="http://twitter.com/@everydaytype/">twitter.com/@everydaytype</a><br />
-        </p>
-      </div>
-      <div class="rss">
-        <a href="http://feeds.feedburner.com/">
-          <img src="/assets/themes/tom/images/rss.png" alt="Subscribe to RSS Feed" />
-        </a>
-      </div>
-    </div>
-  </div>
-  <a href="http://github.com/thenickcox"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a>
+    </footer> 
+  
+  </div><!-- site -->
 
   
 </body>
 </html>
-

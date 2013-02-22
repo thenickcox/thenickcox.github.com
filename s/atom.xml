@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>Devblog</title>
+ <link href="http://thenickcox.github.com/atom.xml" rel="self"/>
+ <link href="http://thenickcox.github.com"/>
+ <updated>2012-12-20T00:07:51-08:00</updated>
+ <id>http://thenickcox.github.com</id>
+ <author>
+   <name>Nick Cox</name>
+   <email>nick@nickcox.me</email>
+ </author>
+
+ 
+ <entry>
+   <title>Method Aliases In Ruby</title>
+   <link href="http://thenickcox.github.com/articles/2012/12/18/method-aliases-in-ruby"/>
+   <updated>2012-12-18T00:00:00-08:00</updated>
+   <id>http://thenickcox.github.com/articles/2012/12/18/method-aliases-in-ruby</id>
+   <content type="html">&lt;p&gt;I often find myself wondering why so many of the Ruby native string and array methods have aliases. For example, with string methods, we have &lt;code&gt;next&lt;/code&gt; and &lt;code&gt;succ&lt;/code&gt;, which are equivalent; they both return the next alphanumeric character. Like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1.9.3p194 :024 &amp;gt; string = &amp;quot;a&amp;quot;
+ =&amp;gt; &amp;quot;a&amp;quot; 
+1.9.3p194 :025 &amp;gt; string.next
+ =&amp;gt; &amp;quot;b&amp;quot; 
+1.9.3p194 :026 &amp;gt; string
+ =&amp;gt; &amp;quot;a&amp;quot; 
+1.9.3p194 :027 &amp;gt; string.succ
+ =&amp;gt; &amp;quot;b&amp;quot;   &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So why do we need both? Here is another example. &lt;code&gt;length&lt;/code&gt; and &lt;code&gt;size&lt;/code&gt; are also synonymous. Both return the character length of a string.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1.9.3p194 :028 &amp;gt; a = &amp;quot;supercalifragilisticexpealidocious&amp;quot;
+ =&amp;gt; &amp;quot;supercalifragilisticexpealidocious&amp;quot; 
+1.9.3p194 :029 &amp;gt; a.size
+ =&amp;gt; 34 
+1.9.3p194 :030 &amp;gt; a.length
+ =&amp;gt; 34 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is perplexing to me. As much as I love Ruby, I often think that my mind philosophically prefers Python&amp;#8217;s approach. The following is a direct quote from &lt;a href='http://www.python.org/dev/peps/pep-0020/'&gt;&amp;#8216;The Zen of Python&amp;#8217;&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;There should be one—and preferably only one—obvious way to do anything.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I don&amp;#8217;t necessarily have an answer (other than the likelihood that one or the other will be more familiar to programmers coming from other languages), but here&amp;#8217;s a thought. We&amp;#8217;re not working in Python, so let&amp;#8217;s embrace the fact that Ruby has two ways of doing things sometimes.&lt;/p&gt;
+
+&lt;p&gt;If we think intuitively, it seems to me that we would want to find the &amp;#8216;size&amp;#8217; of an alphanumeric string like, for instance, a base 64 token. That, to me, makes more intuitive sense than to get the &amp;#8216;length&amp;#8217; of it. &lt;code&gt;length&lt;/code&gt;, to me, seems to be the method we would want to use to find the length of a word, where the word &amp;#8216;size&amp;#8217; (and method of the same name) don&amp;#8217;t make as much lexical sense.&lt;/p&gt;
+
+&lt;p&gt;For example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1.9.3p194 :018 &amp;gt; token = SecureRandom.urlsafe_base64
+ =&amp;gt; &amp;quot;OFiTxLeCuosWXiLe9nVLeQ&amp;quot; 
+1.9.3p194 :019 &amp;gt; token.size
+ =&amp;gt; 22 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Compare that to this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1.9.3p194 :022 &amp;gt; sentence = &amp;quot;An incredibly long sentence about whosits and whatsits&amp;quot;
+ =&amp;gt; &amp;quot;An incredibly long sentence about whosits and whatsits&amp;quot; 
+1.9.3p194 :023 &amp;gt; sentence.length
+ =&amp;gt; 54  &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Doesn&amp;#8217;t that just make more sense? To me, it seems more expressive.&lt;/p&gt;
+
+&lt;p&gt;Just to reiterate, whereas a developer coming from Python might be tempted to use one or the other method uniformly throughout a project, I like to think that Ruby&amp;#8217;s features lend themselves well to expressiveness, and I would prefer using one method or the other in the context it makes sense. After all, we work in a language with this syntax:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;3.times do &amp;#39;Hello World!&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is as close to spoken English as I&amp;#8217;ve ever seen programming syntax. So let&amp;#8217;s write Ruby like we would speak, and use methods where they make sense contextually, even if they do the same thing. As a result, our code will be eaiser to read, and therefore maintain. That&amp;#8217;s why we have the canonical saying:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;#8216;Programs must be written for people to read, and only incidentally for machines to execute.&amp;#8217; - H. Abelson and G. Sussman &lt;em&gt;&amp;#8220;The Structure and Interpretation of Computer Programs)&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;That sounds good, but let&amp;#8217;s make this a little bit more complex. Look what happens when we make our string an array. &lt;code&gt;size&lt;/code&gt; and &lt;code&gt;length&lt;/code&gt; still apply, but to count the number of items in an array we also have, you guessed it, &lt;code&gt;count&lt;/code&gt;. Check this out:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1.9.3p194 :017 &amp;gt; sentence = &amp;quot;An incredibly long sentence about whosits and whatsits&amp;quot;
+ =&amp;gt; &amp;quot;An incredibly long sentence about whosits and whatsits&amp;quot; 
+1.9.3p194 :018 &amp;gt; a = sentence.split(&amp;#39; &amp;#39;)
+ =&amp;gt; [&amp;quot;An&amp;quot;, &amp;quot;incredibly&amp;quot;, &amp;quot;long&amp;quot;, &amp;quot;sentence&amp;quot;, &amp;quot;about&amp;quot;, &amp;quot;whosits&amp;quot;, &amp;quot;and&amp;quot;, &amp;quot;whatsits&amp;quot;] 
+1.9.3p194 :019 &amp;gt; a.size
+ =&amp;gt; 8 
+1.9.3p194 :020 &amp;gt; a.length
+ =&amp;gt; 8 
+1.9.3p194 :021 &amp;gt; a.count
+ =&amp;gt; 8 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So when should we use which? According to the &lt;a href='http://www.ruby-doc.org/core-1.9.3/Array.html#method-i-length'&gt;Ruby docs&lt;/a&gt;, &lt;code&gt;size&lt;/code&gt; and &lt;code&gt;length&lt;/code&gt; are truly the same, but &lt;code&gt;count&lt;/code&gt; can take a block, and will return the number array items that give a true value. So let&amp;#8217;s look at our previous example with this in mind:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1.9.3p194 :027 &amp;gt; a
+ =&amp;gt; [&amp;quot;An&amp;quot;, &amp;quot;incredibly&amp;quot;, &amp;quot;long&amp;quot;, &amp;quot;sentence&amp;quot;, &amp;quot;about&amp;quot;, &amp;quot;whosits&amp;quot;, &amp;quot;and&amp;quot;, &amp;quot;whatsits&amp;quot;] 
+1.9.3p194 :028 &amp;gt; a.count
+ =&amp;gt; 8 
+1.9.3p194 :029 &amp;gt; a.count(&amp;#39;long&amp;#39;)
+ =&amp;gt; 1 
+1.9.3p194 :030 &amp;gt; a.count(&amp;#39;hello&amp;#39;)
+ =&amp;gt; 0 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So while &lt;code&gt;count&lt;/code&gt; can return the number of array elements, it also has this added feature of &lt;code&gt;count&lt;/code&gt;ing the number of passed in items the array elements match.&lt;/p&gt;
+
+&lt;p&gt;Thus, the only rule I can think of when working with arrays is to choose &lt;code&gt;size&lt;/code&gt; or &lt;code&gt;length&lt;/code&gt; and work with it throughout a project to return the number of array items, but only use &lt;code&gt;count&lt;/code&gt; when you need to pass in a block so that there is no confusion about why you used differerent methods in different places to do the same job. This will lend to more cohesion and more expressiveness.&lt;/p&gt;
+
+&lt;h2 id='gotchas'&gt;Gotchas&lt;/h2&gt;
+
+&lt;p&gt;There are, of course, some gotchas to this idea. When I first started writing Ruby, I was so in love with the English-like syntax that, for a time, I decided I wanted to use words instead of symbols for conditional operators. Thus, I might&amp;#8217;ve at one point been prone to write:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;def greeting
+  if user.logged_in? and not(user.nil?)
+    &amp;quot;Welcome back, #{user.name}&amp;quot;
+  end
+end&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That was a contrived example, for sure, and an exaggeration, but I wanted to get to this point: While researching the logical operators, I found a &lt;a href='http://blog.internautdesign.com/2007/5/30/ruby-operator-precedence-gotcha-logical-and'&gt;case&lt;/a&gt; where &lt;code&gt;and&lt;/code&gt; and &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt; returned different values:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1.9.3p194 :013 &amp;gt; result = true and false; result
+ =&amp;gt; true 
+1.9.3p194 :014 &amp;gt; result = true &amp;amp;&amp;amp; false; result
+ =&amp;gt; false&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That scared me enough to make me want to use symbolic logical operators all the time and sometimes parenthesis just to communicate intent. I now do this even when not strictly necessary:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;def viewable_by?(current_user)
+  current_user.system_admin? || ( current_user.logged_in? &amp;amp;&amp;amp; current_user.owner? )
+end&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In this case, the parenthesis weren&amp;#8217;t absolutely necessary, as can be seen when we boil this example down:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1.9.3p194 :024 &amp;gt; false || true &amp;amp;&amp;amp; true
+ =&amp;gt; true&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But I use parenthesis anyway. I don&amp;#8217;t sacrifice the aesthetics of the code (in my opinion, anyway), and that way, my code intentions become immediately more clear. And isn&amp;#8217;t that the goal?&lt;/p&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>Refactoring Cucumber</title>
+   <link href="http://thenickcox.github.com/articles/2012/12/17/refactoring-cucumber"/>
+   <updated>2012-12-17T00:00:00-08:00</updated>
+   <id>http://thenickcox.github.com/articles/2012/12/17/refactoring-cucumber</id>
+   <content type="html">&lt;p&gt;At work, we&amp;#8217;ve been moving away from Cucumber tests for the past number of months, in favor of the more robust Capybara and rspec paring. Given that I&amp;#8217;m a relative novice in Rails test-driven development, the supposed brittleness of Cucumber tests wasn&amp;#8217;t immediately clear to me, so I did some digging, and came up with a &lt;a href='http://aslakhellesoy.com/post/11055981222/the-training-wheels-came-off'&gt;few&lt;/a&gt; &lt;a href='http://benmabey.com/2008/05/19/imperative-vs-declarative-scenarios-in-user-stories.html'&gt;posts&lt;/a&gt; that talk about the pitfalls of the &amp;#8220;imperative&amp;#8221; style of step writing for user stories. A solid example of this is Ben Mabey&amp;#8217;s ancient, but still applicable post, &lt;a href='http://benmabey.com/2008/05/19/imperative-vs-declarative-scenarios-in-user-stories.html'&gt;&amp;#8220;Imperative vs. Declarative Scenarios in User Stories&amp;#8221;&lt;/a&gt;. Mabey&amp;#8217;s assertion is that it is too easy to rely too heavily on the built-in Cucumber web steps. For example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;When I fill in Name with &amp;#39;Alligator&amp;#39;
+And select Phylum as &amp;#39;Chordata&amp;#39;
+And fill in Animal Class with &amp;#39;Sauropsida&amp;#39;
+And fill in Order with &amp;#39;Crocodilia&amp;#39;
+And fill in Family with &amp;#39;Alligatoridae&amp;#39;
+And fill in Genus with &amp;#39;Alligator&amp;#39;
+And check Lay Eggs
+And click the Create button&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here, Maybe suggests, the &amp;#8220;story&amp;#8221; part of the user story tends to get lost and mired in the technical details. I was heavily influenced by this post, and decided to do a little Cucumber refactoring at work to try out Mabey&amp;#8217;s declarative style, which he demonstrates thusly:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	Story: Animal Submission
+	As a Zoologist
+	I want to add a new animal to the site
+	So that I can share my animal knowledge with the community
+	
+		Scenario: successful submission
+		Given I&amp;#39;m on the animal creation page
+		When I add a new animal
+		Then I should see the page for my newly created animal
+		And the notice &amp;#39;Thank you for your animal submission!&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As Mabey notes, it has more of the &lt;a href='http://www.jbrains.ca/permalink/user-stories-a-ticket-for-a-conversation'&gt;token for conversation&lt;/a&gt; feel to it, and it&amp;#8217;s immediately clear that it is more likely to meet the user&amp;#8217;s need, since, in this case, the user cares more about completing their goals than how those goals are handled on the back end.&lt;/p&gt;
+
+&lt;h2 id='my_attempt'&gt;My Attempt&lt;/h2&gt;
+
+&lt;p&gt;I took Mabey&amp;#8217;s advice to our own codebase, and I extracted a Cucumber test that I had written a few months back. Now, I won&amp;#8217;t start to bad mouth my code and talk endlessly about how terrible a person I am for having written it this way, but I&amp;#8217;ll give you a taste of how poorly this test spoke to the user&amp;#8217;s need. I present to you this feature test for our site&amp;#8217;s feedback form:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	#features/feedback.feature
+Feature: Feedback
+Scenario: Submitting feedback
+	Given I go to the feedback page
+	And I fill out the feedback form and submit it	
+	Then I should see a success message
+	Then I should see &amp;quot;Email can&amp;#39;t be blank&amp;quot;
+	When I fill in &amp;quot;Your email&amp;quot; with &amp;quot;nick@navigatingcancer.com&amp;quot;
+	And I fill in &amp;quot;Summary&amp;quot; with &amp;quot;This site rules&amp;quot;
+	And I fill in &amp;quot;What you observed&amp;quot; with &amp;quot;This site rules&amp;quot;
+	And I press &amp;quot;Send&amp;quot;
+	Then the flash notice should be &amp;quot;Thank you for your feedback! |
+		We try to respond to questions and requests within one business day.&amp;quot;
+	And ruby FeedbackForm.last.email.should == &amp;#39;nick@navigatingcancer.com&amp;#39;
+	And ruby FeedbackForm.last.content.should match &amp;quot;This site rules&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Yep, you read that right. That&amp;#8217;s a Ruby function inside of a Cucumber test. I wonder what user will be thinking of their form submission in terms of a Ruby method chain? Now here&amp;#8217;s my improved version, written with Turnip and Capybara.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#spec/acceptance/forms/feedback.feature&amp;#39;
+Feature: Feedback form
+
+	As a user of the site
+I want to be able to submit feedback about the site
+So that I can report if something breaks
+
+	@feedback
+Scenario: Submitting feedback (successful)
+	Given I go to the feedback page
+	And I fill out the feedback form and submit it
+	Then I should see a success message
+
+#spec/acceptance/forms/feedback_steps.rb
+require &amp;#39;spec_helper&amp;#39;
+steps_for :feedback do
+	step &amp;#39;I go to the feedback page&amp;#39; do
+  	page.visit &amp;#39;/feedback&amp;#39;
+	end
+
+		step &amp;#39;I fill out the feedback form and submit it&amp;#39; do
+ 		page.click_button &amp;#39;Send&amp;#39;
+ 		page.should have_content &amp;quot;Email can&amp;#39;t be blank&amp;quot;
+ 		page.fill_in &amp;#39;Your email&amp;#39;, with: &amp;#39;joe@navigatingcancer.com&amp;#39;
+ 		page.fill_in &amp;#39;Summary&amp;#39;, with: &amp;#39;Just saying&amp;#39;      		page.fill_in &amp;#39;What you observed&amp;#39;, with: &amp;#39;I am awesome&amp;#39;
+  	page.click_button &amp;#39;Send&amp;#39;
+	end
+
+		step &amp;#39;I should see a success message&amp;#39; do
+  	page.should have_content &amp;quot;Thank you for your feedback! We try to respond to questions and requests within one business day.&amp;quot;
+ 		FeedbackForm.last.email.should == &amp;#39;joe@navigatingcancer.com&amp;#39;
+  	FeedbackForm.last.content.should match &amp;#39;I am awesome&amp;#39;
+	end
+end&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;See how much more nicely that reads? Now the user story is really coherent. They go to the form and submit it, and they should get a success message. That&amp;#8217;s truly how simple the step should be. Notice that I still handled the validation in Capybara. But the it&amp;#8217;s not the user&amp;#8217;s job to think about what should happen if they don&amp;#8217;t submit the form correctly, it&amp;#8217;s mine. Thus, I should handle that in the test logic that doesn&amp;#8217;t involve the user story.&lt;/p&gt;
+
+&lt;h2 id='onward'&gt;Onward&lt;/h2&gt;
+
+&lt;p&gt;As a front-end developer coming to the TDD Rails world, Cucumber was helpful to me because it helped me to think about things from the browser&amp;#8217;s perspective. The &lt;a href='https://github.com/cucumber/cucumber/wiki/Gherkin'&gt;gherkin syntax&lt;/a&gt;, when used well, really does allow for expressive steps and user stories that invite collaboration with non-developers. But that syntax paired with Capybara&amp;#8217;s more robust step handling make for a much clearer and well-executed test. Notably, the reason I went back to this test was that we had changed the UI for the form. Our previous form submitted an &lt;a href='https://unfuddle.com/'&gt;unfuddle&lt;/a&gt; ticket, but we have recently switched our ticketing system to &lt;a href='http://assembla.com'&gt;Assembla&lt;/a&gt;. Also, we added a few fields and renamed others. In this case, the Cucumber test (previous to the one I have posted) would have failed because it wouldn&amp;#8217;t have been able to find the form labels it was looking for. &lt;em&gt;But the user story remained the same.&lt;/em&gt; All the user wants to do is submit a feedback form. So rather than changing several tests to reflect this, why not only change the ones that are concerned on the back end? They&amp;#8217;re easier to maintain, and as great as Cucumber was, I find that I prefer the Capybara-rspec approach when it comes to looking for content on the page. I&amp;#8217;m looking forward to exploring this technique across our codebase during refactoring, and in the future.&lt;/p&gt;</content>
+ </entry>
+ 
+ 
+</feed>

@@ -52,19 +52,21 @@
     30 January 2013 
     
   </p>
-  <p>It took me two or three false starts to really get working in Vim. I loved <a href='http://www.sublimetext.com/2'>Sublime Text</a> so much that it was hard to switch. But when I would watch my coworker type at dizzyingly fast speeds, I knew that I would have to make the switch to Vim in order to maximize my efficiency at work.</p>
+  
+<p>It took me two or three false starts to really get working in Vim. I loved <a href="http://www.sublimetext.com/2">Sublime Text</a> so much that it was hard to switch. But when I would watch my coworker type at dizzyingly fast speeds, I knew that I would have to make the switch to Vim in order to maximize my efficiency at work.</p>
 
 <p>It has mostly been a great ride, but once in a while, Vim gets weird or wonky. Today, I had a problem that a good deal of Google searching didn&#8217;t seem to want to fix, so I stumbled on a solution I thought I&#8217;d share in case anyone else is pulling their hair out.</p>
 
-<p>I was working in Sublime (don&#8217;t ask) reworking some HTML markup on a particular page, and I had decided to convert it to HAML for inclusion in our app at work. I used the <a href='https://github.com/haml/html2haml'>html2haml gem</a> to convert it, and when I opened it up in Vim, I saw a number of special characters that looked like this: <code>&lt;200b&gt;</code>. They were all over, littering the document. I didn&#8217;t want to try to remove them by hand, but trying to find and replace them with an empty string didn&#8217;t work, because Vim wouldn&#8217;t let me search for <code>&lt;200b&gt;</code>.</p>
+<p>I was working in Sublime (don&#8217;t ask) reworking some HTML markup on a particular page, and I had decided to convert it to HAML for inclusion in our app at work. I used the <a href="https://github.com/haml/html2haml">html2haml gem</a> to convert it, and when I opened it up in Vim, I saw a number of special characters that looked like this: <code>&lt;200b&gt;</code>. They were all over, littering the document. I didn&#8217;t want to try to remove them by hand, but trying to find and replace them with an empty string didn&#8217;t work, because Vim wouldn&#8217;t let me search for <code>&lt;200b&gt;</code>. </p>
 
-<p>I did some searching, and found out that this character is the <a href='http://en.wikipedia.org/wiki/Zero-width_space'>zero-width space</a>. This oxymoronically named unicode character is, I gather, the equivalent of the <code>&amp;nbsp;</code> HTML entity in that, to quote Wikipedia, &#8220;In HTML pages, this space can be used as a potential line-break in long words.&#8221;</p>
+<p>I did some searching, and found out that this character is the <a href="http://en.wikipedia.org/wiki/Zero-width_space">zero-width space</a>. This oxymoronically named unicode character is, I gather, the equivalent of the <code>&amp;nbsp;</code> HTML entity in that, to quote Wikipedia, &#8220;In HTML pages, this space can be used as a potential line-break in long words.&#8221;</p>
 
 <p>Well, whatever it is, I had to switch Vim to utf-8 mode (<code>:set encoding=utf8</code>). That enabled me to search for <code>&lt;200b&gt;</code>. After that, it was simply a matter of finding and replacing: <code>:%s/&lt;200b&gt;///g</code>. You&#8217;re probably familiar with that syntax, but let&#8217;s break it down. <code>:%s/old_string/new_string/options</code>. That is, <code>:</code> puts Vim into execute mode, <code>%s/</code> tells it you&#8217;re going to search, <code>&lt;200b&gt;</code> is the search string, and we&#8217;re replacing it with nothing, hence the next two slashes: <code>//</code>, and the <code>g</code> flag stands for global, in other words, do this throughout the file.</p>
 
 <p>Note that, in order to include <code>&lt;200b&gt;</code> in the string search, I had to physically highlight it with my mouse and copy paste it into the search; yanking or using visual mode did not work.</p>
 
-<p>I hope that was able to save someone a headache.</p>
+<p>I hope that was able to save someone a headache. </p>
+
 </article>
 
 

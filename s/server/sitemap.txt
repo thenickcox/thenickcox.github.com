@@ -1,0 +1,12 @@
+
+http://thenickcox.github.com/about.html
+http://thenickcox.github.com/archive.html
+http://thenickcox.github.com/atom.xml
+http://thenickcox.github.com/categories.html
+http://thenickcox.github.com/index.html
+http://thenickcox.github.com/pages.html
+http://thenickcox.github.com/sitemap.txt
+http://thenickcox.github.com/tags.html
+
+http://thenickcox.github.com/articles/2012/12/18/method-aliases-in-ruby
+http://thenickcox.github.com/articles/2012/12/17/refactoring-cucumber

@@ -52,32 +52,36 @@
     21 February 2013 
     
   </p>
-  <p>I&#8217;ve been working a bit with CoffeeScript lately, and I&#8217;ve pretty much fallen in love. But as a Rubyist, I find that I miss a few things. Allow me to explain.</p>
+  
+<p>I&#8217;ve been working a bit with CoffeeScript lately, and I&#8217;ve pretty much fallen in love. But as a Rubyist, I find that I miss a few things. Allow me to explain. </p>
 
-<p>Over the Christmas holiday, I found a GitHub project called <a href='http://githubfantasy.com/'>Github Fantasy League</a>, which cleverly quantifies a GitHub user&#8217;s open source &#8220;score&#8221; by assigning point values to certain activities, such as creating a pull request or filing an issue. The project is written in CoffeeScript, and I decided I would find something to fix so I could work in the CoffeeScript file and file a <a href='https://github.com/jwright/github-fantasy-league/pull/2'>pull request</a>. My change was modest; I decided that the form needed validation. So I spent some time looking over the CoffeeScript syntax, and I rewrote one particular function thusly:</p>
+<p>Over the Christmas holiday, I found a GitHub project called <a href="http://githubfantasy.com/">Github Fantasy League</a>, which cleverly quantifies a GitHub user&#8217;s open source &#8220;score&#8221; by assigning point values to certain activities, such as creating a pull request or filing an issue. The project is written in CoffeeScript, and I decided I would find something to fix so I could work in the CoffeeScript file and file a <a href="https://github.com/jwright/github-fantasy-league/pull/2">pull request</a>. My change was modest; I decided that the form needed validation. So I spent some time looking over the CoffeeScript syntax, and I rewrote one particular function thusly:</p>
 
-<h3 id='original'>Original</h3>
+<h3 id="original">Original</h3>
 
-<pre><code>$(&#39;#username&#39;).bind(&#39;keypress&#39;, (e) =&gt;	  	
+<pre><code>$('#username').bind('keypress', (e) =&gt;	  	
   if (e.keyCode == 13 )	
-    $(&#39;.score-trigger&#39;).click()
-)</code></pre>
+    $('.score-trigger').click()
+)
+</code></pre>
 
-<h3 id='my_edit'>My Edit</h3>
+<h3 id="my-edit">My Edit</h3>
 
-<pre><code>$(&#39;#username&#39;).bind(&#39;keypress&#39;, (e) =&gt;	  	
-  $(&#39;.score-trigger&#39;).click() if e.keyCode == 13)</code></pre>
+<pre><code>$('#username').bind('keypress', (e) =&gt;	  	
+  $('.score-trigger').click() if e.keyCode == 13)
+</code></pre>
 
 <p>This was a few months ago, and I now realize I could&#8217;ve made it still more simple:</p>
 
-<pre><code>$(&#39;#username&#39;).bind(&#39;keypress&#39;, (e) =&gt;	  	
-  $(&#39;.score-trigger&#39;).click() if e.keyCode is 13)</code></pre>
+<pre><code>$('#username').bind('keypress', (e) =&gt;	  	
+  $('.score-trigger').click() if e.keyCode is 13)
+</code></pre>
 
-<p>The elegance of that line asounded me, and it reads like natural English: &#8220;The score-trigger element <span>should receive a</span> click if the keyCode is 13.&#8221; That, to me, is the hallmark of a great language: readable syntax.</p>
+<p>The elegance of that line asounded me, and it reads like natural English: &#8220;The score-trigger element [should receive a] click if the keyCode is 13.&#8221; That, to me, is the hallmark of a great language: readable syntax. </p>
 
-<h2 id='wish_list'>Wish List</h2>
+<h2 id="wish-list">Wish List</h2>
 
-<p>But while I love so much about CoffeeScript, a few things don&#8217;t quite make sense to me. For example, it uses Ruby&#8217;s <code>unless</code> keyword, but still prefer&#8217;s JavaScript&#8217;s native <code>else if</code> conditional for control flow to Ruby&#8217;s <code>elsif</code>. Now, I suppose this is a matter of personal preference. That is, <code>elsif</code> isn&#8217;t a word, where as <code>else if</code> is proper English. But I feel like if CoffeeScript is going to adopt certain Ruby idioms, it should be done uniformly. Thus, I&#8217;d prefer to use <code>elsif</code>.</p>
+<p>But while I love so much about CoffeeScript, a few things don&#8217;t quite make sense to me. For example, it uses Ruby&#8217;s <code>unless</code> keyword, but still prefer&#8217;s JavaScript&#8217;s native <code>else if</code> conditional for control flow to Ruby&#8217;s <code>elsif</code>. Now, I suppose this is a matter of personal preference. That is, <code>elsif</code> isn&#8217;t a word, where as <code>else if</code> is proper English. But I feel like if CoffeeScript is going to adopt certain Ruby idioms, it should be done uniformly. Thus, I&#8217;d prefer to use <code>elsif</code>. </p>
 
 <p>The second thing I&#8217;d like is a ternary operator. I try not to overuse this expression, but if a bit of logic can be placed on one line with the use of a ternary operator, I often prefer it. Consider a simple function to check whether a number is even or odd:</p>
 
@@ -85,21 +89,25 @@
   if number % 2 is 0
     true
   else 
-    false</code></pre>
+    false
+</code></pre>
 
 <p>This is the pefect case for a ternary operator:</p>
 
 <pre><code>isEven = (number) -&gt;
   number % 2 == 0 ? true : false 
-#=&gt; not correct CoffeeScript </code></pre>
+#=&gt; not correct CoffeeScript 
+</code></pre>
 
 <p>I suppose you could argue that writing the function that way is too terse. But stylistically speaking, having a single word on a line bothers me. It&#8217;s inefficient and could be cleaned up. But I suppose that&#8217;s a matter of personal preference.</p>
 
-<h2 id='conclusion'>Conclusion</h2>
+<h2 id="conclusion">Conclusion</h2>
 
 <p>I&#8217;ve very much enjoyed the little CoffeeScript I&#8217;ve done, and I look forward to more complex projects in the near future. However, I do wish that it had the <code>elsif</code> construction (or even supported either <code>else if</code> or <code>elsif</code> just like it supports <code>==</code> or <code>is</code>) and supported the ternary operator. I imagine I&#8217;ll find more as I continue to dive into the language.</p>
 
 <p>What features do you wish CoffeeScript had?</p>
+
+
 </article>
 
 

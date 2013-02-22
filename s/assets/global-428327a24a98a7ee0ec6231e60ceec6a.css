@@ -1,0 +1,251 @@
+/*---------- zellner Styles --------- */
+.sh_zellner {
+  background: none;
+  padding: 0;
+  margin: 0;
+  border: 0 none; }
+  .sh_zellner .sh_sourceCode {
+    background-color: white;
+    color: black;
+    font-weight: normal;
+    font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_keyword {
+      color: brown;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_type {
+      color: blue;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_string, .sh_zellner .sh_sourceCode .sh_regexp, .sh_zellner .sh_sourceCode .sh_specialchar {
+      color: magenta;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_comment {
+      color: red;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_number {
+      color: magenta;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_preproc {
+      color: #a020f0;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_function {
+      color: black;
+      font-weight: bold;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_url {
+      color: magenta;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_date, .sh_zellner .sh_sourceCode .sh_time, .sh_zellner .sh_sourceCode .sh_file {
+      color: brown;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_ip, .sh_zellner .sh_sourceCode .sh_name {
+      color: magenta;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_variable {
+      color: #225f2d;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_oldfile, .sh_zellner .sh_sourceCode .sh_newfile {
+      color: magenta;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_difflines {
+      color: brown;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_selector {
+      color: #225f2d;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_property {
+      color: brown;
+      font-weight: normal;
+      font-style: normal; }
+    .sh_zellner .sh_sourceCode .sh_value {
+      color: magenta;
+      font-weight: normal;
+      font-style: normal; }
+
+/*-------- Snippet Base Styles ---------- */
+.snippet-wrap {
+  position: relative; }
+
+*:first-child + html .snippet-wrap, * html .snippet-wrap {
+  display: inline-block; }
+
+.snippet-reveal {
+  text-decoration: underline; }
+
+.snippet-wrap .snippet-menu {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 0.9em;
+  z-index: 1;
+  background-color: transparent; }
+.snippet-wrap .snippet-hide {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 0.9em;
+  z-index: 1;
+  background-color: transparent;
+  top: auto;
+  bottom: 10px; }
+
+*:first-child + html .snippet-wrap .snippet-hide, * html .snippet-wrap .snippet-hide {
+  bottom: 25px; }
+
+.snippet-wrap .snippet-menu pre, .snippet-wrap .snippet-hide pre {
+  background-color: transparent;
+  margin: 0;
+  padding: 0; }
+.snippet-wrap .snippet-menu a, .snippet-wrap .snippet-hide a {
+  padding: 0 5px;
+  text-decoration: underline; }
+.snippet-wrap pre.sh_sourceCode {
+  padding: 1em;
+  line-height: 1.8em;
+  overflow: auto;
+  position: relative;
+  border: 1px solid #cccccc;
+  background: #f0f1ff; }
+.snippet-wrap pre.snippet-textonly {
+  padding: 2em; }
+
+*:first-child + html .snippet-wrap pre.snippet-formatted, * html .snippet-wrap pre.snippet-formatted {
+  padding: 2em 1em; }
+
+.snippet-reveal pre.sh_sourceCode {
+  padding: 0.5em 1em;
+  text-align: right; }
+
+.snippet-wrap .snippet-num li {
+  padding-left: 1.5em; }
+.snippet-wrap .snippet-no-num {
+  list-style: none;
+  padding: 0.6em 1em;
+  margin: 0; }
+  .snippet-wrap .snippet-no-num li {
+    list-style: none;
+    padding-left: 0; }
+.snippet-wrap .snippet-num {
+  margin: 1em 0 1em 1em;
+  padding-left: 3em; }
+  .snippet-wrap .snippet-num li {
+    list-style: decimal-leading-zero outside none; }
+.snippet-wrap .snippet-no-num li.box {
+  padding: 0 6px;
+  margin-left: -6px; }
+.snippet-wrap .snippet-num li.box {
+  border: 1px solid;
+  list-style-position: inside;
+  margin-left: -3em;
+  padding-left: 6px; }
+
+*:first-child + html .snippet-wrap .snippet-num li.box, * html .snippet-wrap .snippet-num li.box {
+  margin-left: -2.4em; }
+
+.snippet-wrap li.box-top {
+  border-width: 1px 1px 0 !important; }
+.snippet-wrap li.box-bot {
+  border-width: 0 1px 1px !important; }
+.snippet-wrap li.box-mid {
+  border-width: 0 1px !important; }
+.snippet-wrap .snippet-num li .box-sp {
+  width: 18px;
+  display: inline-block; }
+
+*:first-child + html .snippet-wrap .snippet-num li .box-sp, * html .snippet-wrap .snippet-num li .box-sp {
+  width: 27px; }
+
+.snippet-wrap .snippet-no-num li.box {
+  border: 1px solid; }
+.snippet-wrap .snippet-no-num li .box-sp {
+  display: none; }
+
+/* Variables */
+body {
+  font-family: "ff-meta-serif-web-pro";
+  font-size: 15px;
+  color: #454545;
+  line-height: 1.4em; }
+
+.site {
+  font-size: 100%;
+  text-align: left;
+  width: 70%;
+  max-width: 650px; }
+  @media screen and (max-width: 550px) {
+    .site {
+      width: 90%; } }
+
+p {
+  font-size: 110%; }
+
+pre {
+  font-size: 14.5px; }
+
+p a:link {
+  color: #18b6e6; }
+
+p a:visited {
+  color: #18b6e6; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "ff-dax-compact-web-pro"; }
+
+nav {
+  text-align: center; }
+  nav ul li {
+    display: inline;
+    margin: 0 18px; }
+    nav ul li a, nav ul li a:visited {
+      color: #18b6e6;
+      text-decoration: none;
+      font-family: "ff-dax-compact-web-pro";
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 1px;
+      font-size: 1.2em; }
+    nav ul li a:hover {
+      color: #09a7d7; }
+
+.post {
+  margin-top: 100px; }
+
+h1 {
+  font-size: 3em;
+  line-height: 1;
+  margin-bottom: 0; }
+
+h2 {
+  font-size: 2.15em;
+  margin-top: 1.2em;
+  margin-bottom: 0.8em; }
+
+code {
+  background: #f0f1ff;
+  padding: 2px;
+  border: 1px solid #cccccc; }
+
+pre {
+  overflow: scroll; }
+  pre code {
+    border: none; }
+
+blockquote {
+  color: #888888;
+  padding-left: 1.5em;
+  border-left: 6px solid #18b6e6; }
+
+.related a {
+  color: #18b6e6; }

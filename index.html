@@ -49,26 +49,63 @@
       <article>
 
   
-      <h1>Special Characters in Vim</h1>
-      <p class='meta'>30 Jan 2013</p>
-       <p>It took me two or three false starts to really get working in Vim. I loved <a href='http://www.sublimetext.com/2'>Sublime Text</a> so much that it was hard to switch. But when I would watch my coworker type at dizzyingly fast speeds, I knew that I would have to make the switch to Vim in order to maximize my efficiency at work.</p>
+      <h1>CoffeeScript Wishlist</h1>
+      <p class='meta'>21 Feb 2013</p>
+       <p>I&#8217;ve been working a bit with CoffeeScript lately, and I&#8217;ve pretty much fallen in love. But as a Rubyist, I find that I miss a few things. Allow me to explain.</p>
 
-<p>It has mostly been a great ride, but once in a while, Vim gets weird or wonky. Today, I had a problem that a good deal of Google searching didn&#8217;t seem to want to fix, so I stumbled on a solution I thought I&#8217;d share in case anyone else is pulling their hair out.</p>
+<p>Over the Christmas holiday, I found a GitHub project called <a href='http://githubfantasy.com/'>Github Fantasy League</a>, which cleverly quantifies a GitHub user&#8217;s open source &#8220;score&#8221; by assigning point values to certain activities, such as creating a pull request or filing an issue. The project is written in CoffeeScript, and I decided I would find something to fix so I could work in the CoffeeScript file and file a <a href='https://github.com/jwright/github-fantasy-league/pull/2'>pull request</a>. My change was modest; I decided that the form needed validation. So I spent some time looking over the CoffeeScript syntax, and I rewrote one particular function thusly:</p>
 
-<p>I was working in Sublime (don&#8217;t ask) reworking some HTML markup on a particular page, and I had decided to convert it to HAML for inclusion in our app at work. I used the <a href='https://github.com/haml/html2haml'>html2haml gem</a> to convert it, and when I opened it up in Vim, I saw a number of special characters that looked like this: <code>&lt;200b&gt;</code>. They were all over, littering the document. I didn&#8217;t want to try to remove them by hand, but trying to find and replace them with an empty string didn&#8217;t work, because Vim wouldn&#8217;t let me search for <code>&lt;200b&gt;</code>.</p>
+<h3 id='original'>Original</h3>
 
-<p>I did some searching, and found out that this character is the <a href='http://en.wikipedia.org/wiki/Zero-width_space'>zero-width space</a>. This oxymoronically named unicode character is, I gather, the equivalent of the <code>&amp;nbsp;</code> HTML entity in that, to quote Wikipedia, &#8220;In HTML pages, this space can be used as a potential line-break in long words.&#8221;</p>
+<pre><code>$(&#39;#username&#39;).bind(&#39;keypress&#39;, (e) =&gt;	  	
+  if (e.keyCode == 13 )	
+    $(&#39;.score-trigger&#39;).click()
+)</code></pre>
 
-<p>Well, whatever it is, I had to switch Vim to utf-8 mode (<code>:set encoding=utf8</code>). That enabled me to search for <code>&lt;200b&gt;</code>. After that, it was simply a matter of finding and replacing: <code>:%s/&lt;200b&gt;///g</code>. You&#8217;re probably familiar with that syntax, but let&#8217;s break it down. <code>:%s/old_string/new_string/options</code>. That is, <code>:</code> puts Vim into execute mode, <code>%s/</code> tells it you&#8217;re going to search, <code>&lt;200b&gt;</code> is the search string, and we&#8217;re replacing it with nothing, hence the next two slashes: <code>//</code>, and the <code>g</code> flag stands for global, in other words, do this throughout the file.</p>
+<h3 id='my_edit'>My Edit</h3>
 
-<p>Note that, in order to include <code>&lt;200b&gt;</code> in the string search, I had to physically highlight it with my mouse and copy paste it into the search; yanking or using visual mode did not work.</p>
+<pre><code>$(&#39;#username&#39;).bind(&#39;keypress&#39;, (e) =&gt;	  	
+  $(&#39;.score-trigger&#39;).click() if e.keyCode == 13)</code></pre>
 
-<p>I hope that was able to save someone a headache.</p>
+<p>This was a few months ago, and I now realize I could&#8217;ve made it still more simple:</p>
+
+<pre><code>$(&#39;#username&#39;).bind(&#39;keypress&#39;, (e) =&gt;	  	
+  $(&#39;.score-trigger&#39;).click() if e.keyCode is 13)</code></pre>
+
+<p>The elegance of that line asounded me, and it reads like natural English: &#8220;The score-trigger element <span>should receive a</span> click if the keyCode is 13.&#8221; That, to me, is the hallmark of a great language: readable syntax.</p>
+
+<h2 id='wish_list'>Wish List</h2>
+
+<p>But while I love so much about CoffeeScript, a few things don&#8217;t quite make sense to me. For example, it uses Ruby&#8217;s <code>unless</code> keyword, but still prefer&#8217;s JavaScript&#8217;s native <code>else if</code> conditional for control flow to Ruby&#8217;s <code>elsif</code>. Now, I suppose this is a matter of personal preference. That is, <code>elsif</code> isn&#8217;t a word, where as <code>else if</code> is proper English. But I feel like if CoffeeScript is going to adopt certain Ruby idioms, it should be done uniformly. Thus, I&#8217;d prefer to use <code>elsif</code>.</p>
+
+<p>The second thing I&#8217;d like is a ternary operator. I try not to overuse this expression, but if a bit of logic can be placed on one line with the use of a ternary operator, I often prefer it. Consider a simple function to check whether a number is even or odd:</p>
+
+<pre><code>isEven = (number) -&gt;
+  if number % 2 is 0
+    true
+  else 
+    false</code></pre>
+
+<p>This is the pefect case for a ternary operator:</p>
+
+<pre><code>isEven = (number) -&gt;
+  number % 2 == 0 ? true : false 
+#=&gt; not correct CoffeeScript </code></pre>
+
+<p>I suppose you could argue that writing the function that way is too terse. But stylistically speaking, having a single word on a line bothers me. It&#8217;s inefficient and could be cleaned up. But I suppose that&#8217;s a matter of personal preference.</p>
+
+<h2 id='conclusion'>Conclusion</h2>
+
+<p>I&#8217;ve very much enjoyed the little CoffeeScript I&#8217;ve done, and I look forward to more complex projects in the near future. However, I do wish that it had the <code>elsif</code> construction (or even supported either <code>else if</code> or <code>elsif</code> just like it supports <code>==</code> or <code>is</code>) and supported the ternary operator. I imagine I&#8217;ll find more as I continue to dive into the language.</p>
+
+<p>What features do you wish CoffeeScript had?</p>
   
 
 </article><section class='recently'>
   <h2>Recently</h2>
   <ul class='posts'>
+    
+      <li><span>30 Jan 2013</span> &raquo; <a href='/2013/01/30/new-post'>Special Characters in Vim</a></li>
     
       <li><span>18 Dec 2012</span> &raquo; <a href='/articles/2012/12/18/method-aliases-in-ruby'>Method Aliases In Ruby</a></li>
     
